@@ -1,1 +1,35 @@
-IM teramoh
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodePen-like Editor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="editor-container">
+    <div class="editor">
+        <h2>HTML</h2>
+        <textarea id="html-editor" placeholder="Write HTML here..."></textarea>
+    </div>
+
+    <div class="editor">
+        <h2>CSS</h2>
+        <textarea id="css-editor" placeholder="Write CSS here..."></textarea>
+    </div>
+
+    <div class="editor">
+        <h2>JavaScript</h2>
+        <textarea id="js-editor" placeholder="Write JavaScript here..."></textarea>
+    </div>
+</div>
+
+<div class="preview-container">
+    <h2>Preview</h2>
+    <iframe id="preview" class="preview"></iframe>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
