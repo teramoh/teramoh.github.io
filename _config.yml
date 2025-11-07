@@ -1,0 +1,9 @@
+# Site settings
+title: teramoh.github.io
+description: My GitHub Pages site
+url: "https://teramoh.github.io"
+baseurl: ""
+
+# Build settings
+markdown: kramdown
+theme: minima
