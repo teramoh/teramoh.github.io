@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ポケモンタイプ相性クイズ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 ポケモンタイプ相性クイズ</h1>
+            <p class="subtitle">攻撃タイプと防御タイプの相性を当てよう！</p>
+        </header>
+
+        <div id="start-screen" class="screen active">
+            <div class="start-content">
+                <div class="pokeball-icon">⚡</div>
+                <h2>タイプ相性マスターを目指せ！</h2>
+                <p>攻撃タイプが防御タイプに対して<br>どれくらい効果があるか答えよう</p>
+                <div class="difficulty-select">
+                    <h3>難易度を選択</h3>
+                    <button class="difficulty-btn" data-difficulty="easy">🌟 かんたん（10問）</button>
+                    <button class="difficulty-btn" data-difficulty="normal">⭐ ふつう（15問）</button>
+                    <button class="difficulty-btn" data-difficulty="hard">💫 むずかしい（20問）</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="quiz-screen" class="screen">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="score-display">
+                <span>スコア: <span id="current-score">0</span></span>
+                <span>問題: <span id="current-question">1</span>/<span id="total-questions">10</span></span>
+            </div>
+
+            <div class="quiz-card">
+                <div class="question-section">
+                    <div class="type-display">
+                        <div class="attack-type">
+                            <span class="label">攻撃タイプ</span>
+                            <span class="type-badge" id="attack-type">ほのお</span>
+                        </div>
+                        <div class="vs-icon">⚔️</div>
+                        <div class="defense-type">
+                            <span class="label">防御タイプ</span>
+                            <span class="type-badge" id="defense-type">くさ</span>
+                        </div>
+                    </div>
+                    <p class="question-text">この攻撃の効果は？</p>
+                </div>
+
+                <div class="answer-section">
+                    <button class="answer-btn" data-effect="2">🔥 効果はばつぐん！（2倍）</button>
+                    <button class="answer-btn" data-effect="1">➡️ 普通（1倍）</button>
+                    <button class="answer-btn" data-effect="0.5">💨 効果はいまひとつ（0.5倍）</button>
+                    <button class="answer-btn" data-effect="0">🚫 効果がない（0倍）</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="feedback-modal" class="modal hidden">
+            <div class="modal-content feedback-modal-content">
+                <div class="feedback-icon" id="feedback-icon"></div>
+                <div class="feedback-text" id="feedback-text"></div>
+                <button id="next-btn" class="next-btn">次の問題 →</button>
+            </div>
+        </div>
+
+        <div id="result-screen" class="screen">
+            <div class="result-content">
+                <div class="result-icon" id="result-icon">🏆</div>
+                <h2 id="result-title">すばらしい！</h2>
+                <div class="result-score">
+                    <span class="score-label">最終スコア</span>
+                    <span class="score-value" id="final-score">0</span>
+                    <span class="score-max">/ <span id="max-score">10</span></span>
+                </div>
+                <div class="result-percentage" id="result-percentage">100%</div>
+                <div class="result-message" id="result-message">タイプ相性マスター！</div>
+                <div class="result-buttons">
+                    <button id="retry-btn" class="retry-btn">🔄 もう一度挑戦</button>
+                    <button id="home-btn" class="home-btn">🏠 タイトルへ</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="type-chart-btn" class="type-chart-toggle">
+            <button id="show-chart-btn">📊 タイプ相性表</button>
+        </div>
+
+        <div id="type-chart-modal" class="modal hidden">
+            <div class="modal-content">
+                <button class="modal-close" id="close-chart-btn">✕</button>
+                <h3>タイプ相性表</h3>
+                <div class="chart-legend">
+                    <span class="legend-item super">◎ 2倍</span>
+                    <span class="legend-item normal">○ 1倍</span>
+                    <span class="legend-item not-very">△ 0.5倍</span>
+                    <span class="legend-item no-effect">✕ 0倍</span>
+                </div>
+                <div class="type-chart-container">
+                    <table id="type-chart"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

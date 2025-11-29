@@ -1,0 +1,17 @@
+{
+  "name": "periodictable",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "元素周期表ゲーム",
+  "devDependencies": {
+    "vite": "^6.4.1"
+  }
+}

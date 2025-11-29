@@ -1,0 +1,791 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    min-height: 100vh;
+    height: 100vh;
+    color: #fff;
+    overflow: hidden;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 10px 20px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 10px;
+    flex-shrink: 0;
+}
+
+header h1 {
+    font-size: 1.8rem;
+    background: linear-gradient(45deg, #00d4ff, #7b2ff7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    color: #a0a0a0;
+    font-size: 0.9rem;
+}
+
+/* モード選択 */
+.mode-selector {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+}
+
+.mode-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.mode-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.mode-btn.active {
+    background: linear-gradient(45deg, #00d4ff, #7b2ff7);
+    box-shadow: 0 5px 20px rgba(0, 212, 255, 0.4);
+}
+
+/* ゲームセクション */
+.game-section {
+    display: none;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.game-section.active {
+    display: flex;
+    flex-direction: column;
+}
+
+/* 学習モード */
+#learn-mode {
+    display: none;
+    gap: 10px;
+}
+
+#learn-mode.active {
+    display: flex;
+    flex-direction: column;
+}
+
+/* 周期表 */
+.periodic-table {
+    display: grid;
+    grid-template-columns: repeat(18, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    gap: 3px;
+    padding: 5px;
+    flex: 1;
+    min-height: 0;
+}
+
+.element {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.7rem;
+    padding: 2px;
+}
+
+.element:hover {
+    transform: scale(1.15);
+    z-index: 10;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+}
+
+.element .number {
+    font-size: 0.55rem;
+    opacity: 0.8;
+    line-height: 1;
+}
+
+.element .symbol {
+    font-size: 1.1rem;
+    font-weight: bold;
+    line-height: 1.2;
+}
+
+.element .name {
+    font-size: 0.5rem;
+    opacity: 0.9;
+    text-align: center;
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+/* 元素カテゴリーの色 */
+.alkali-metal { background: linear-gradient(135deg, #ff6b6b, #ee5a5a); }
+.alkaline-earth { background: linear-gradient(135deg, #ffa726, #ff9800); }
+.transition-metal { background: linear-gradient(135deg, #42a5f5, #1e88e5); }
+.post-transition { background: linear-gradient(135deg, #66bb6a, #43a047); }
+.metalloid { background: linear-gradient(135deg, #26c6da, #00acc1); }
+.nonmetal { background: linear-gradient(135deg, #ab47bc, #8e24aa); }
+.halogen { background: linear-gradient(135deg, #5c6bc0, #3f51b5); }
+.noble-gas { background: linear-gradient(135deg, #ec407a, #d81b60); }
+.lanthanide { background: linear-gradient(135deg, #7cb342, #689f38); }
+.actinide { background: linear-gradient(135deg, #ff7043, #f4511e); }
+.unknown { background: linear-gradient(135deg, #78909c, #607d8b); }
+
+/* 周期表内の元素情報パネル */
+.element-info-panel {
+    grid-column: 3 / 13;
+    grid-row: 1 / 4;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.element-info-panel.has-element {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 8px 20px;
+    text-align: left;
+    align-items: center;
+}
+
+.element-info-panel .info-symbol {
+    grid-row: 1 / 4;
+    font-size: 4rem;
+    font-weight: bold;
+    color: #00d4ff;
+    padding-right: 20px;
+    border-right: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.element-info-panel .info-name {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+.element-info-panel .info-name-en {
+    font-size: 0.95rem;
+    color: #a0a0a0;
+}
+
+.element-info-panel .info-details {
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+.element-info-panel .info-details span {
+    margin-right: 15px;
+}
+
+.element-info-panel .info-description {
+    grid-column: 1 / -1;
+    font-size: 0.85rem;
+    color: #a0a0a0;
+    margin-top: 8px;
+    line-height: 1.4;
+}
+
+.element-info-panel .placeholder-text {
+    color: #666;
+    font-size: 1rem;
+}
+
+/* クイズモード */
+#quiz-mode.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.quiz-container {
+    max-width: 700px;
+    width: 100%;
+}
+
+.quiz-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.score, .question-count {
+    font-size: 1rem;
+}
+
+.score span, .question-count span {
+    color: #00d4ff;
+    font-weight: bold;
+}
+
+.quiz-question {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 25px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.quiz-question h2 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}
+
+.quiz-question .hint {
+    color: #a0a0a0;
+    font-size: 0.9rem;
+}
+
+.quiz-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.quiz-option {
+    padding: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.quiz-option:hover {
+    border-color: #00d4ff;
+    background: rgba(0, 212, 255, 0.1);
+}
+
+.quiz-option.correct {
+    background: rgba(76, 175, 80, 0.5);
+    border-color: #4caf50;
+}
+
+.quiz-option.wrong {
+    background: rgba(244, 67, 54, 0.5);
+    border-color: #f44336;
+}
+
+.start-quiz-btn, .next-btn {
+    grid-column: 1 / -1;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 20px;
+    background: linear-gradient(45deg, #00d4ff, #7b2ff7);
+    color: #fff;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.start-quiz-btn:hover, .next-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
+}
+
+.quiz-feedback {
+    text-align: center;
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: 10px;
+    font-size: 1rem;
+    display: none;
+}
+
+.quiz-feedback.show {
+    display: block;
+}
+
+.quiz-feedback.correct {
+    background: rgba(76, 175, 80, 0.3);
+    color: #4caf50;
+}
+
+.quiz-feedback.wrong {
+    background: rgba(244, 67, 54, 0.3);
+    color: #f44336;
+}
+
+/* 暗記カードモード */
+#flashcard-mode.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flashcard-container {
+    max-width: 600px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+/* モード選択画面 */
+.flashcard-mode-select {
+    text-align: center;
+    width: 100%;
+}
+
+.flashcard-mode-select h2 {
+    font-size: 1.5rem;
+    color: #00d4ff;
+    margin-bottom: 10px;
+}
+
+.flashcard-mode-select p {
+    color: #a0a0a0;
+    margin-bottom: 20px;
+}
+
+.mode-options {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.mode-option-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 20px 25px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 160px;
+}
+
+.mode-option-btn:hover {
+    border-color: #00d4ff;
+    background: rgba(0, 212, 255, 0.1);
+    transform: translateY(-3px);
+}
+
+.mode-option-btn .mode-icon {
+    font-size: 2rem;
+}
+
+.mode-option-btn .mode-title {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.mode-option-btn .mode-desc {
+    font-size: 0.75rem;
+    color: #a0a0a0;
+}
+
+/* ゲーム画面 */
+.flashcard-game {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.flashcard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.back-to-mode-btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.back-to-mode-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.flashcard-progress {
+    font-size: 1rem;
+    color: #fff;
+}
+
+.flashcard-progress span {
+    color: #00d4ff;
+    font-weight: bold;
+}
+
+.flashcard-stats {
+    display: flex;
+    gap: 20px;
+}
+
+.stat-know, .stat-review {
+    font-size: 1rem;
+}
+
+.stat-know span {
+    color: #4caf50;
+    font-weight: bold;
+}
+
+.stat-review span {
+    color: #ff9800;
+    font-weight: bold;
+}
+
+.flashcard-area {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 220px;
+}
+
+.flashcard {
+    width: 320px;
+    height: 180px;
+    perspective: 1000px;
+    cursor: pointer;
+}
+
+.flashcard.transitioning {
+    pointer-events: none;
+}
+
+.flashcard-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+}
+
+.flashcard.flipped .flashcard-inner {
+    transform: rotateY(180deg);
+}
+
+.flashcard.no-transition .flashcard-inner {
+    transition: none;
+}
+
+.flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+}
+
+.flashcard-front {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.flashcard-front .flashcard-symbol {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+.flashcard-front .flashcard-symbol.position-mode {
+    font-size: 1.8rem;
+}
+
+.flashcard-front .flashcard-hint {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 10px;
+}
+
+.flashcard-back {
+    background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+    transform: rotateY(180deg);
+}
+
+.flashcard-back .flashcard-name {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.flashcard-back .flashcard-details {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-align: center;
+    line-height: 1.4;
+}
+
+.flashcard-controls {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.flashcard-instruction {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+}
+
+.flashcard-btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.flashcard-btn.next {
+    background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+    color: #fff;
+    padding: 15px 50px;
+    font-size: 1.1rem;
+}
+
+.flashcard-btn.back {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.flashcard-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.start-flashcard-btn {
+    padding: 15px 40px;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(45deg, #00d4ff, #7b2ff7);
+    color: #fff;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.start-flashcard-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
+}
+
+/* 結果表示 */
+.result-screen {
+    text-align: center;
+    padding: 20px;
+}
+
+.result-screen h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #00d4ff;
+}
+
+.result-screen .final-score {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+.result-screen .message {
+    font-size: 1rem;
+    color: #a0a0a0;
+    margin-bottom: 20px;
+}
+
+/* カテゴリー凡例 */
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 8px;
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.85rem;
+}
+
+.legend-color {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+}
+
+/* フッター */
+footer {
+    display: none;
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+    .periodic-table {
+        grid-template-columns: repeat(18, 1fr);
+        gap: 1px;
+    }
+
+    .element {
+        font-size: 0.5rem;
+        border-radius: 2px;
+    }
+
+    .element .symbol {
+        font-size: 0.8rem;
+    }
+
+    .element .name {
+        display: none;
+    }
+
+    .quiz-options {
+        grid-template-columns: 1fr;
+    }
+
+    .match-game {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .mode-btn {
+        padding: 8px 15px;
+        font-size: 0.8rem;
+    }
+
+    header h1 {
+        font-size: 1.4rem;
+    }
+
+    .element-info-panel .info-symbol {
+        font-size: 2.5rem;
+    }
+
+    .element-info-panel .info-name {
+        font-size: 1rem;
+    }
+
+    .element-info-panel .info-details {
+        font-size: 0.7rem;
+    }
+
+    .element-info-panel .info-description {
+        font-size: 0.65rem;
+    }
+}
+
+@media (max-height: 700px) {
+    header h1 {
+        font-size: 1.4rem;
+    }
+
+    .subtitle {
+        display: none;
+    }
+
+    .element .name {
+        display: none;
+    }
+
+    .element-info-panel {
+        padding: 10px 15px;
+    }
+
+    .element-info-panel .info-symbol {
+        font-size: 2.5rem;
+    }
+
+    .legend {
+        padding: 5px 10px;
+        gap: 6px;
+    }
+
+    .legend-item {
+        font-size: 0.75rem;
+    }
+}
+
+/* 空のセル */
+.empty-cell {
+    background: transparent;
+    pointer-events: none;
+}
+
+/* ランタニド・アクチニドの区切り */
+.lanthanide-row, .actinide-row {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(15, 1fr);
+    gap: 3px;
+    margin-top: 10px;
+}
+
+.series-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    color: #a0a0a0;
+}
