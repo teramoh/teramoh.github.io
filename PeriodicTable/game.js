@@ -1,4 +1,5 @@
 import { elements, categoryNames, quizTypes, shuffleArray } from './elements.js';
+import './styles.css';
 
 // ゲームの状態
 let currentMode = 'learn';
