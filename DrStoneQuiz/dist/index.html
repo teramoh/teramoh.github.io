@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr.STONE クイズ</title>
+  <script type="module" crossorigin src="./assets/index-YlpxuZmM.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-C1011dkr.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧪 Dr.STONE クイズ 🔬</h1>
+            <p class="subtitle">～ 石の世界で科学の知識を試せ！～</p>
+        </header>
+
+        <!-- スタート画面 -->
+        <div id="start-screen" class="screen">
+            <div class="start-content">
+                <p class="intro">千空と仲間たちの冒険から出題！<br>君の科学知識はどれくらい？</p>
+                <div class="difficulty-select">
+                    <h3>難易度を選択</h3>
+                    <button class="btn difficulty-btn" data-difficulty="easy">初級（ストーンワールド入門）</button>
+                    <button class="btn difficulty-btn" data-difficulty="normal">中級（科学王国メンバー）</button>
+                    <button class="btn difficulty-btn" data-difficulty="hard">上級（千空レベル）</button>
+                    <button class="btn difficulty-btn mania" data-difficulty="mania">マニア級（百物語の継承者）</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- クイズ画面 -->
+        <div id="quiz-screen" class="screen hidden">
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <div class="quiz-info">
+                <span id="question-number">問題 1/10</span>
+                <span id="score">スコア: 0</span>
+            </div>
+            <div class="question-container">
+                <h2 id="question">問題文がここに表示されます</h2>
+            </div>
+            <div class="options-container" id="options">
+                <!-- 選択肢がここに生成される -->
+            </div>
+        </div>
+
+        <!-- フィードバックモーダル -->
+        <div class="modal-overlay hidden" id="modal-overlay">
+            <div class="modal" id="feedback-modal">
+                <div class="modal-icon" id="modal-icon"></div>
+                <p class="modal-result" id="feedback-text"></p>
+                <p class="modal-explanation" id="explanation"></p>
+                <button class="btn modal-btn" id="next-btn">次の問題へ</button>
+            </div>
+        </div>
+
+        <!-- 結果画面 -->
+        <div id="result-screen" class="screen hidden">
+            <div class="result-content">
+                <h2>クイズ終了！</h2>
+                <div class="result-score">
+                    <span id="final-score">0</span> / <span id="total-questions">10</span>
+                </div>
+                <p class="result-message" id="result-message"></p>
+                <div class="result-rank" id="result-rank"></div>
+                <button class="btn" id="retry-btn">もう一度挑戦する</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
