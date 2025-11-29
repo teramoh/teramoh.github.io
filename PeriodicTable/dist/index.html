@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>元素周期表ゲーム</title>
+  <script type="module" crossorigin src="/assets/index-Dz-pcXx8.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-k3RKNAf3.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧪 元素周期表ゲーム</h1>
+            <p class="subtitle">元素を学んで、クイズに挑戦しよう！</p>
+        </header>
+
+        <nav class="mode-selector">
+            <button class="mode-btn active" data-mode="learn">📚 学習モード</button>
+            <button class="mode-btn" data-mode="quiz">🎯 クイズモード</button>
+            <button class="mode-btn" data-mode="flashcard">🃏 暗記カード</button>
+        </nav>
+
+        <!-- 学習モード -->
+        <section id="learn-mode" class="game-section active">
+            <div class="periodic-table" id="periodic-table"></div>
+        </section>
+
+        <!-- クイズモード -->
+        <section id="quiz-mode" class="game-section">
+            <div class="quiz-container">
+                <div class="quiz-header">
+                    <div class="score">スコア: <span id="quiz-score">0</span></div>
+                    <div class="question-count">問題: <span id="current-question">1</span>/10</div>
+                </div>
+                <div class="quiz-question" id="quiz-question">
+                    <h2>準備はいいですか？</h2>
+                    <p>スタートボタンを押してクイズを始めましょう！</p>
+                </div>
+                <div class="quiz-options" id="quiz-options">
+                    <button class="start-quiz-btn" id="start-quiz">🚀 クイズスタート</button>
+                </div>
+                <div class="quiz-feedback" id="quiz-feedback"></div>
+            </div>
+        </section>
+
+        <!-- 暗記カードモード -->
+        <section id="flashcard-mode" class="game-section">
+            <div class="flashcard-container">
+                <div class="flashcard-mode-select" id="flashcard-mode-select">
+                    <h2>🃏 暗記カードモード選択</h2>
+                    <p>出題形式を選んでください</p>
+                    <div class="mode-options">
+                        <button class="mode-option-btn" data-flashcard-mode="symbol">
+                            <span class="mode-icon">🔤</span>
+                            <span class="mode-title">元素記号モード</span>
+                            <span class="mode-desc">記号から元素名を当てる</span>
+                        </button>
+                        <button class="mode-option-btn" data-flashcard-mode="number">
+                            <span class="mode-icon">🔢</span>
+                            <span class="mode-title">番号モード</span>
+                            <span class="mode-desc">原子番号から元素を当てる</span>
+                        </button>
+                        <button class="mode-option-btn" data-flashcard-mode="position">
+                            <span class="mode-icon">📍</span>
+                            <span class="mode-title">周期族モード</span>
+                            <span class="mode-desc">周期と族から元素を当てる</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="flashcard-game" id="flashcard-game" style="display: none;">
+                    <div class="flashcard-header">
+                        <button class="back-to-mode-btn" id="back-to-mode-btn">← モード選択</button>
+                        <div class="flashcard-progress">カード: <span id="flashcard-current">1</span>/<span id="flashcard-total">118</span></div>
+                    </div>
+                    <div class="flashcard-area" id="flashcard-area">
+                        <div class="flashcard" id="flashcard">
+                            <div class="flashcard-inner">
+                                <div class="flashcard-front">
+                                    <span class="flashcard-symbol">?</span>
+                                    <span class="flashcard-hint">クリックでめくる</span>
+                                </div>
+                                <div class="flashcard-back">
+                                    <span class="flashcard-name"></span>
+                                    <span class="flashcard-details"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flashcard-controls" id="flashcard-controls"></div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>元素周期表ゲーム © 2025</p>
+        </footer>
+    </div>
+
+</body>
+</html>
