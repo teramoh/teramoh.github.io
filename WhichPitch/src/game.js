@@ -102,11 +102,6 @@ const elements = {
   
   pianoKeys: document.getElementById('piano-keys'),
   
-  resultDisplay: document.getElementById('result-display'),
-  resultIcon: document.getElementById('result-icon'),
-  resultText: document.getElementById('result-text'),
-  
-  nextBtn: document.getElementById('next-btn'),
   quitBtn: document.getElementById('quit-btn'),
   
   finalPercentage: document.getElementById('final-percentage'),
@@ -121,7 +116,12 @@ const elements = {
   correctModal: document.getElementById('correct-modal'),
   modalAnswer: document.getElementById('modal-answer'),
   modalStreak: document.getElementById('modal-streak'),
-  modalNextBtn: document.getElementById('modal-next-btn')
+  modalNextBtn: document.getElementById('modal-next-btn'),
+  
+  // Wrong modal elements
+  wrongModal: document.getElementById('wrong-modal'),
+  wrongModalAnswer: document.getElementById('wrong-modal-answer'),
+  wrongModalNextBtn: document.getElementById('wrong-modal-next-btn')
 };
 
 // Show/Hide panels
@@ -304,9 +304,8 @@ function handleSingleAnswer(selectedNote) {
     // Show correct modal
     showCorrectModal(getNoteName(correctNote));
   } else {
-    // Show wrong result inline
-    showResult(false, getNoteName(correctNote));
-    elements.nextBtn.classList.remove('hidden');
+    // Show wrong modal
+    showWrongModal(getNoteName(correctNote));
   }
 }
 
@@ -336,8 +335,7 @@ function handleMelodyAnswer(selectedNote) {
     gameState.score.streak = 0;
     
     const correctNotes = gameState.currentQuestion.map(n => getNoteName(n.note)).join(' → ');
-    showResult(false, correctNotes);
-    elements.nextBtn.classList.remove('hidden');
+    showWrongModal(correctNotes);
     updateScoreDisplay();
     return;
   }
@@ -359,29 +357,6 @@ function handleMelodyAnswer(selectedNote) {
     // Show correct modal for melody
     const correctNotes = gameState.currentQuestion.map(n => getNoteName(n.note)).join(' → ');
     showCorrectModal(correctNotes);
-  }
-}
-
-// Show result
-function showResult(isCorrect, correctAnswer = null) {
-  elements.resultDisplay.classList.remove('hidden', 'correct', 'wrong');
-  elements.resultDisplay.classList.add(isCorrect ? 'correct' : 'wrong');
-  
-  const isKidsMode = gameState.level === 'kindergarten' || gameState.level === 'elementary';
-  
-  if (isCorrect) {
-    elements.resultIcon.textContent = '✓';
-    elements.resultText.textContent = isKidsMode ? 'せいかい！🦄✨' : '正解！';
-  } else {
-    elements.resultIcon.textContent = '💦';
-    // Convert answer to Japanese if kids mode
-    let displayAnswer = correctAnswer;
-    if (isKidsMode && correctAnswer) {
-      displayAnswer = correctAnswer.split(' → ').map(n => getNoteName(n)).join(' → ');
-    }
-    elements.resultText.textContent = isKidsMode 
-      ? `おしい！こたえは ${displayAnswer} だよ 🌈` 
-      : `不正解... 正解は ${displayAnswer}`;
   }
 }
 
@@ -419,9 +394,22 @@ function showCorrectModal(answer) {
   elements.correctModal.classList.remove('hidden');
 }
 
-// Hide correct modal
-function hideCorrectModal() {
+// Show wrong modal
+function showWrongModal(answer) {
+  const isKidsMode = gameState.level === 'kindergarten' || gameState.level === 'elementary';
+  
+  elements.wrongModalAnswer.textContent = answer;
+  
+  // Update button text based on level
+  elements.wrongModalNextBtn.textContent = isKidsMode ? '✨ つぎのもんだい ✨' : '✨ 次の問題 ✨';
+  
+  elements.wrongModal.classList.remove('hidden');
+}
+
+// Hide modals
+function hideModals() {
   elements.correctModal.classList.add('hidden');
+  elements.wrongModal.classList.add('hidden');
 }
 
 // Show final results
@@ -581,17 +569,18 @@ elements.playBtn.addEventListener('click', async () => {
   elements.playBtn.disabled = false;
 });
 
-elements.nextBtn.addEventListener('click', () => {
+elements.modalNextBtn.addEventListener('click', () => {
+  hideModals();
   newQuestion();
 });
 
-elements.modalNextBtn.addEventListener('click', () => {
-  hideCorrectModal();
+elements.wrongModalNextBtn.addEventListener('click', () => {
+  hideModals();
   newQuestion();
 });
 
 elements.quitBtn.addEventListener('click', () => {
-  hideCorrectModal();
+  hideModals();
   showFinalResults();
 });
 

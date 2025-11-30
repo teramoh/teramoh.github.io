@@ -5,8 +5,8 @@
     <link rel="icon" type="image/svg+xml" href="/WhichPitch/dist/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>WhichPitch - 絶対音感練習アプリ</title>
-    <script type="module" crossorigin src="/WhichPitch/dist/assets/index-svAhImi1.js"></script>
-    <link rel="stylesheet" crossorigin href="/WhichPitch/dist/assets/index-BeDvShoG.css">
+    <script type="module" crossorigin src="/WhichPitch/dist/assets/index-BNDuiEUJ.js"></script>
+    <link rel="stylesheet" crossorigin href="/WhichPitch/dist/assets/index-DVC8575k.css">
   </head>
   <body>
     <div id="app">
@@ -92,12 +92,11 @@
 
         <!-- ゲーム画面 -->
         <section id="game-panel" class="card hidden">
-          <div class="game-header">
-            <div class="score-display">
-              ⭐ <span id="correct-count">0</span> / <span id="total-count">0</span>
-            </div>
-            <div class="streak-display">
-              🔥 れんぞく: <span id="streak-count">0</span>
+          <div class="game-header-mini">
+            <span class="mini-title">🎵 WhichPitch</span>
+            <div class="mini-score">
+              ⭐ <span id="correct-count">0</span>/<span id="total-count">0</span>
+              <span class="mini-streak">🔥<span id="streak-count">0</span></span>
             </div>
           </div>
 
@@ -117,14 +116,8 @@
             </div>
           </div>
 
-          <div id="result-display" class="result-display hidden">
-            <span id="result-icon"></span>
-            <span id="result-text"></span>
-          </div>
-
           <div class="game-controls">
-            <button id="next-btn" class="primary-btn hidden">次の問題</button>
-            <button id="quit-btn" class="secondary-btn">終了</button>
+            <button id="quit-btn" class="secondary-btn small-btn">🚪 やめる</button>
           </div>
         </section>
 
@@ -155,15 +148,27 @@
       <!-- 正解モーダル -->
       <div id="correct-modal" class="modal hidden">
         <div class="modal-overlay"></div>
-        <div class="modal-content">
+        <div class="modal-content correct-modal">
           <div class="modal-icon">🦄</div>
           <h2 class="modal-title">すごい！</h2>
-          <p class="modal-message" id="modal-answer"></p>
+          <p class="modal-message">こたえは <span id="modal-answer"></span></p>
           <div class="modal-streak">
             <span class="streak-label">🔥 れんぞくせいかい</span>
             <span class="streak-number" id="modal-streak">0</span>
           </div>
           <button id="modal-next-btn" class="primary-btn modal-btn">✨ つぎのもんだい ✨</button>
+        </div>
+      </div>
+
+      <!-- 不正解モーダル -->
+      <div id="wrong-modal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content wrong-modal">
+          <div class="modal-icon">💦</div>
+          <h2 class="modal-title wrong-title">おしい！</h2>
+          <p class="modal-message">こたえは <span id="wrong-modal-answer" class="correct-answer"></span></p>
+          <p class="encouragement">つぎはがんばろう！ 🌈</p>
+          <button id="wrong-modal-next-btn" class="primary-btn modal-btn">✨ つぎのもんだい ✨</button>
         </div>
       </div>
     </div>
