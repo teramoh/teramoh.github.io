@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WhichPitch - 絶対音感練習アプリ</title>
+    <script type="module" crossorigin src="/assets/index-CRePWTpC.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DTMEiUea.css">
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <h1>🎵 WhichPitch</h1>
+        <p class="subtitle">絶対音感練習アプリ</p>
+      </header>
+
+      <main>
+        <!-- レベル選択 -->
+        <section id="level-selection" class="card">
+          <h2>レベルを選択してね！</h2>
+          <div class="level-buttons">
+            <button id="kindergarten-btn" class="level-btn kindergarten">
+              <span class="level-icon">🌸</span>
+              <span class="level-title">ようちえん</span>
+              <span class="level-desc">ドレミファソラシ だけ！</span>
+            </button>
+            <button id="elementary-btn" class="level-btn elementary">
+              <span class="level-icon">🎒</span>
+              <span class="level-title">小学生</span>
+              <span class="level-desc">白い鍵盤と黒い鍵盤</span>
+            </button>
+            <button id="adult-btn" class="level-btn adult">
+              <span class="level-icon">🎓</span>
+              <span class="level-title">大人</span>
+              <span class="level-desc">全音域でチャレンジ！</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- モード選択 -->
+        <section id="mode-selection" class="card hidden">
+          <h2 id="mode-title">練習モードを選択</h2>
+          <div class="mode-buttons">
+            <button id="single-mode-btn" class="mode-btn">
+              <span class="mode-icon">🎹</span>
+              <span class="mode-title">単音モード</span>
+              <span class="mode-desc">1つの音を聴いて当てる</span>
+            </button>
+            <button id="melody-mode-btn" class="mode-btn">
+              <span class="mode-icon">🎼</span>
+              <span class="mode-title">メロディモード</span>
+              <span class="mode-desc">複数の音を順番に当てる</span>
+            </button>
+          </div>
+          <button id="back-to-level-btn" class="secondary-btn" style="margin-top: 16px;">レベル選択に戻る</button>
+        </section>
+
+        <!-- 設定パネル -->
+        <section id="settings-panel" class="card hidden">
+          <h2 id="settings-title">設定</h2>
+          <div id="level-info" class="level-info"></div>
+          <div class="settings-grid">
+            <div class="setting-item advanced-only">
+              <label for="octave-range">オクターブ範囲</label>
+              <select id="octave-range">
+                <option value="3">C3 - B3 (低め)</option>
+                <option value="4" selected>C4 - B4 (中央)</option>
+                <option value="5">C5 - B5 (高め)</option>
+                <option value="3-5">C3 - B5 (広範囲)</option>
+              </select>
+            </div>
+            <div class="setting-item melody-only">
+              <label for="melody-length">メロディの長さ</label>
+              <select id="melody-length">
+                <option value="3">3音</option>
+                <option value="4" selected>4音</option>
+                <option value="5">5音</option>
+                <option value="6">6音</option>
+              </select>
+            </div>
+            <div class="setting-item advanced-only">
+              <label for="include-sharps">
+                <input type="checkbox" id="include-sharps" checked />
+                シャープ・フラットを含む
+              </label>
+            </div>
+          </div>
+          <button id="start-game-btn" class="primary-btn">スタート！</button>
+          <button id="back-btn" class="secondary-btn">戻る</button>
+        </section>
+
+        <!-- ゲーム画面 -->
+        <section id="game-panel" class="card hidden">
+          <div class="game-header">
+            <div class="score-display">
+              <span id="correct-count">0</span> / <span id="total-count">0</span>
+            </div>
+            <div class="streak-display">
+              連続正解: <span id="streak-count">0</span>
+            </div>
+          </div>
+
+          <div class="play-section">
+            <button id="play-btn" class="play-btn">
+              <span class="play-icon">▶️</span>
+              <span>音を聴く</span>
+            </button>
+            <div id="melody-progress" class="melody-progress hidden">
+              <span id="current-note-index">1</span> / <span id="total-notes">4</span> 音目
+            </div>
+          </div>
+
+          <div class="answer-section">
+            <div id="piano-keys" class="piano-keys">
+              <!-- ピアノキーはJSで生成 -->
+            </div>
+          </div>
+
+          <div id="result-display" class="result-display hidden">
+            <span id="result-icon"></span>
+            <span id="result-text"></span>
+          </div>
+
+          <div class="game-controls">
+            <button id="next-btn" class="primary-btn hidden">次の問題</button>
+            <button id="quit-btn" class="secondary-btn">終了</button>
+          </div>
+        </section>
+
+        <!-- 結果画面 -->
+        <section id="result-panel" class="card hidden">
+          <h2>結果</h2>
+          <div class="final-score">
+            <div class="score-circle">
+              <span id="final-percentage">0</span>%
+            </div>
+            <p><span id="final-correct">0</span> / <span id="final-total">0</span> 正解</p>
+          </div>
+          <div class="stats">
+            <div class="stat-item">
+              <span class="stat-label">最高連続正解</span>
+              <span id="max-streak" class="stat-value">0</span>
+            </div>
+          </div>
+          <button id="retry-btn" class="primary-btn">もう一度</button>
+          <button id="home-btn" class="secondary-btn">レベル選択へ</button>
+        </section>
+      </main>
+
+      <footer>
+        <p>© 2025 WhichPitch</p>
+      </footer>
+    </div>
+  </body>
+</html>
