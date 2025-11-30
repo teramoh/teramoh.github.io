@@ -9,27 +9,27 @@
   <body>
     <div id="app">
       <header>
-        <h1>🎵 WhichPitch</h1>
-        <p class="subtitle">絶対音感練習アプリ</p>
+        <h1>🦄 WhichPitch 🌈</h1>
+        <p class="subtitle">✨ ぜったいおんかんれんしゅうアプリ ✨</p>
       </header>
 
       <main>
         <!-- レベル選択 -->
         <section id="level-selection" class="card">
-          <h2>レベルを選択してね！</h2>
+          <h2>🌟 レベルをえらんでね！ 🌟</h2>
           <div class="level-buttons">
             <button id="kindergarten-btn" class="level-btn kindergarten">
-              <span class="level-icon">🌸</span>
+              <span class="level-icon">🎀</span>
               <span class="level-title">ようちえん</span>
               <span class="level-desc">ドレミファソラシ だけ！</span>
             </button>
             <button id="elementary-btn" class="level-btn elementary">
-              <span class="level-icon">🎒</span>
+              <span class="level-icon">🦄</span>
               <span class="level-title">小学生</span>
               <span class="level-desc">白い鍵盤と黒い鍵盤</span>
             </button>
             <button id="adult-btn" class="level-btn adult">
-              <span class="level-icon">🎓</span>
+              <span class="level-icon">💎</span>
               <span class="level-title">大人</span>
               <span class="level-desc">全音域でチャレンジ！</span>
             </button>
@@ -38,15 +38,15 @@
 
         <!-- モード選択 -->
         <section id="mode-selection" class="card hidden">
-          <h2 id="mode-title">練習モードを選択</h2>
+          <h2 id="mode-title">🌸 れんしゅうモード 🌸</h2>
           <div class="mode-buttons">
             <button id="single-mode-btn" class="mode-btn">
-              <span class="mode-icon">🎹</span>
+              <span class="mode-icon">🌙</span>
               <span class="mode-title">単音モード</span>
               <span class="mode-desc">1つの音を聴いて当てる</span>
             </button>
             <button id="melody-mode-btn" class="mode-btn">
-              <span class="mode-icon">🎼</span>
+              <span class="mode-icon">🌈</span>
               <span class="mode-title">メロディモード</span>
               <span class="mode-desc">複数の音を順番に当てる</span>
             </button>
@@ -92,17 +92,17 @@
         <section id="game-panel" class="card hidden">
           <div class="game-header">
             <div class="score-display">
-              <span id="correct-count">0</span> / <span id="total-count">0</span>
+              ⭐ <span id="correct-count">0</span> / <span id="total-count">0</span>
             </div>
             <div class="streak-display">
-              連続正解: <span id="streak-count">0</span>
+              🔥 れんぞく: <span id="streak-count">0</span>
             </div>
           </div>
 
           <div class="play-section">
             <button id="play-btn" class="play-btn">
-              <span class="play-icon">▶️</span>
-              <span>音を聴く</span>
+              <span class="play-icon">🎵</span>
+              <span>おとをきく</span>
             </button>
             <div id="melody-progress" class="melody-progress hidden">
               <span id="current-note-index">1</span> / <span id="total-notes">4</span> 音目
@@ -128,27 +128,42 @@
 
         <!-- 結果画面 -->
         <section id="result-panel" class="card hidden">
-          <h2>結果</h2>
+          <h2>🌟 けっか 🌟</h2>
           <div class="final-score">
             <div class="score-circle">
               <span id="final-percentage">0</span>%
             </div>
-            <p><span id="final-correct">0</span> / <span id="final-total">0</span> 正解</p>
+            <p>🎉 <span id="final-correct">0</span> / <span id="final-total">0</span> せいかい 🎉</p>
           </div>
           <div class="stats">
             <div class="stat-item">
-              <span class="stat-label">最高連続正解</span>
+              <span class="stat-label">🔥 さいこうれんぞく</span>
               <span id="max-streak" class="stat-value">0</span>
             </div>
           </div>
-          <button id="retry-btn" class="primary-btn">もう一度</button>
-          <button id="home-btn" class="secondary-btn">レベル選択へ</button>
+          <button id="retry-btn" class="primary-btn">🔁 もういちど</button>
+          <button id="home-btn" class="secondary-btn">🏠 レベル選択へ</button>
         </section>
       </main>
 
       <footer>
-        <p>© 2025 WhichPitch</p>
+        <p>🌸 2025 WhichPitch 🌸</p>
       </footer>
+
+      <!-- 正解モーダル -->
+      <div id="correct-modal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+          <div class="modal-icon">🦄</div>
+          <h2 class="modal-title">すごい！</h2>
+          <p class="modal-message" id="modal-answer"></p>
+          <div class="modal-streak">
+            <span class="streak-label">🔥 れんぞくせいかい</span>
+            <span class="streak-number" id="modal-streak">0</span>
+          </div>
+          <button id="modal-next-btn" class="primary-btn modal-btn">✨ つぎのもんだい ✨</button>
+        </div>
+      </div>
     </div>
     <script type="module" src="/src/main.js"></script>
   </body>

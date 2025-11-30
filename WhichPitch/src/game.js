@@ -115,7 +115,13 @@ const elements = {
   maxStreak: document.getElementById('max-streak'),
   
   retryBtn: document.getElementById('retry-btn'),
-  homeBtn: document.getElementById('home-btn')
+  homeBtn: document.getElementById('home-btn'),
+  
+  // Modal elements
+  correctModal: document.getElementById('correct-modal'),
+  modalAnswer: document.getElementById('modal-answer'),
+  modalStreak: document.getElementById('modal-streak'),
+  modalNextBtn: document.getElementById('modal-next-btn')
 };
 
 // Show/Hide panels
@@ -288,13 +294,20 @@ function handleSingleAnswer(selectedNote) {
   
   // Update UI
   updateScoreDisplay();
-  showResult(isCorrect, getNoteName(correctNote));
   highlightKeys(selectedNote, correctNote, isCorrect);
-  elements.nextBtn.classList.remove('hidden');
   
   // Play the selected note
   const octave = gameState.currentQuestion.octave;
   playNote(selectedNote, octave, 0.5);
+  
+  if (isCorrect) {
+    // Show correct modal
+    showCorrectModal(getNoteName(correctNote));
+  } else {
+    // Show wrong result inline
+    showResult(false, getNoteName(correctNote));
+    elements.nextBtn.classList.remove('hidden');
+  }
 }
 
 // Handle melody answer
@@ -342,9 +355,10 @@ function handleMelodyAnswer(selectedNote) {
       gameState.score.maxStreak = gameState.score.streak;
     }
     
-    showResult(true);
-    elements.nextBtn.classList.remove('hidden');
     updateScoreDisplay();
+    // Show correct modal for melody
+    const correctNotes = gameState.currentQuestion.map(n => getNoteName(n.note)).join(' → ');
+    showCorrectModal(correctNotes);
   }
 }
 
@@ -357,16 +371,16 @@ function showResult(isCorrect, correctAnswer = null) {
   
   if (isCorrect) {
     elements.resultIcon.textContent = '✓';
-    elements.resultText.textContent = isKidsMode ? 'せいかい！🎉' : '正解！';
+    elements.resultText.textContent = isKidsMode ? 'せいかい！🦄✨' : '正解！';
   } else {
-    elements.resultIcon.textContent = '✗';
+    elements.resultIcon.textContent = '💦';
     // Convert answer to Japanese if kids mode
     let displayAnswer = correctAnswer;
     if (isKidsMode && correctAnswer) {
       displayAnswer = correctAnswer.split(' → ').map(n => getNoteName(n)).join(' → ');
     }
     elements.resultText.textContent = isKidsMode 
-      ? `ざんねん... こたえは ${displayAnswer}` 
+      ? `おしい！こたえは ${displayAnswer} だよ 🌈` 
       : `不正解... 正解は ${displayAnswer}`;
   }
 }
@@ -390,6 +404,24 @@ function updateScoreDisplay() {
   elements.correctCount.textContent = gameState.score.correct;
   elements.totalCount.textContent = gameState.score.total;
   elements.streakCount.textContent = gameState.score.streak;
+}
+
+// Show correct modal
+function showCorrectModal(answer) {
+  const isKidsMode = gameState.level === 'kindergarten' || gameState.level === 'elementary';
+  
+  elements.modalAnswer.textContent = answer;
+  elements.modalStreak.textContent = gameState.score.streak;
+  
+  // Update button text based on level
+  elements.modalNextBtn.textContent = isKidsMode ? '✨ つぎのもんだい ✨' : '✨ 次の問題 ✨';
+  
+  elements.correctModal.classList.remove('hidden');
+}
+
+// Hide correct modal
+function hideCorrectModal() {
+  elements.correctModal.classList.add('hidden');
 }
 
 // Show final results
@@ -449,13 +481,13 @@ function updateModeSelectionUI() {
   const isKids = gameState.level === 'kindergarten';
   
   if (isKids) {
-    elements.modeTitle.textContent = 'れんしゅうモードをえらんでね！';
+    elements.modeTitle.textContent = '🌸 れんしゅうモードをえらんでね！ 🌸';
     document.querySelector('#single-mode-btn .mode-title').textContent = 'たんおんモード';
-    document.querySelector('#single-mode-btn .mode-desc').textContent = '1つのおとをあてよう';
+    document.querySelector('#single-mode-btn .mode-desc').textContent = '1つのおとをあてよう 🎵';
     document.querySelector('#melody-mode-btn .mode-title').textContent = 'メロディモード';
-    document.querySelector('#melody-mode-btn .mode-desc').textContent = 'おとをじゅんばんにあてよう';
+    document.querySelector('#melody-mode-btn .mode-desc').textContent = 'おとをじゅんばんにあてよう 🎶';
   } else {
-    elements.modeTitle.textContent = '練習モードを選択';
+    elements.modeTitle.textContent = '🎀 れんしゅうモード 🎀';
     document.querySelector('#single-mode-btn .mode-title').textContent = '単音モード';
     document.querySelector('#single-mode-btn .mode-desc').textContent = '1つの音を聴いて当てる';
     document.querySelector('#melody-mode-btn .mode-title').textContent = 'メロディモード';
@@ -553,7 +585,13 @@ elements.nextBtn.addEventListener('click', () => {
   newQuestion();
 });
 
+elements.modalNextBtn.addEventListener('click', () => {
+  hideCorrectModal();
+  newQuestion();
+});
+
 elements.quitBtn.addEventListener('click', () => {
+  hideCorrectModal();
   showFinalResults();
 });
 
