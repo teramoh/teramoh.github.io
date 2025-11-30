@@ -61,18 +61,18 @@ export function playNote(note, octave, duration = 0.8) {
     oscillator2.frequency.setValueAtTime(frequency * 2, audioContext.currentTime);
     
     const gainNode2 = audioContext.createGain();
-    gainNode2.gain.setValueAtTime(0.15, audioContext.currentTime);
+    gainNode2.gain.setValueAtTime(0.4, audioContext.currentTime);
     
-    // ADSR envelope
+    // ADSR envelope - increased volume
     const now = audioContext.currentTime;
     const attackTime = 0.02;
     const decayTime = 0.1;
-    const sustainLevel = 0.5;
+    const sustainLevel = 0.8;
     const releaseTime = 0.3;
     
     gainNode.gain.setValueAtTime(0, now);
-    gainNode.gain.linearRampToValueAtTime(0.5, now + attackTime);
-    gainNode.gain.linearRampToValueAtTime(sustainLevel * 0.5, now + attackTime + decayTime);
+    gainNode.gain.linearRampToValueAtTime(1.0, now + attackTime);
+    gainNode.gain.linearRampToValueAtTime(sustainLevel, now + attackTime + decayTime);
     gainNode.gain.linearRampToValueAtTime(0, now + duration);
     
     // Connect nodes
