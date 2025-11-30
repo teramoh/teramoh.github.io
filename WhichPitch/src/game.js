@@ -1,4 +1,4 @@
-import { playNote, playMelody, initAudio, resumeAudio } from './audio.js';
+import { playNote, playMelody, initAudio, resumeAudio, preloadAudio } from './audio.js';
 
 // Notes
 const WHITE_NOTES = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
@@ -495,18 +495,21 @@ function startGame() {
 
 // Level selection
 elements.kindergartenBtn.addEventListener('click', () => {
+  preloadAudio(); // Start loading piano samples
   applyLevelPreset('kindergarten');
   updateModeSelectionUI();
   showPanel(elements.modeSelection);
 });
 
 elements.elementaryBtn.addEventListener('click', () => {
+  preloadAudio(); // Start loading piano samples
   applyLevelPreset('elementary');
   updateModeSelectionUI();
   showPanel(elements.modeSelection);
 });
 
 elements.adultBtn.addEventListener('click', () => {
+  preloadAudio(); // Start loading piano samples
   applyLevelPreset('adult');
   updateModeSelectionUI();
   showPanel(elements.modeSelection);
