@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>大人がわからない！？小学校チャレンジ</title>
+    <script type="module" crossorigin src="/assets/index-C4hUrAsU.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DVP9R9a_.css">
+  </head>
+  <body>
+    <div id="app">
+      <!-- スタート画面 -->
+      <div id="start-screen" class="screen active">
+        <h1>🎓 大人がわからない！？<br>小学校チャレンジ</h1>
+        <p class="description">小学校で習う問題に挑戦！<br>あなたは何問正解できる？</p>
+        
+        <div class="grade-select">
+          <h2>学年を選んでね</h2>
+          <div class="grade-buttons">
+            <button class="grade-btn" data-grade="1">1年生</button>
+            <button class="grade-btn" data-grade="2">2年生</button>
+            <button class="grade-btn" data-grade="3">3年生</button>
+            <button class="grade-btn" data-grade="4">4年生</button>
+            <button class="grade-btn" data-grade="5">5年生</button>
+            <button class="grade-btn" data-grade="6">6年生</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- クイズ画面 -->
+      <div id="quiz-screen" class="screen">
+        <div class="quiz-header">
+          <span id="current-grade" class="grade-badge"></span>
+          <span id="question-counter"></span>
+          <span id="score-display">正解: <span id="score">0</span></span>
+        </div>
+        
+        <div class="question-container">
+          <span id="subject-badge" class="subject-badge"></span>
+          <h2 id="question-text"></h2>
+        </div>
+        
+        <div id="choices" class="choices"></div>
+        
+        <div id="result-feedback" class="feedback hidden">
+          <div id="result-icon"></div>
+          <p id="result-text"></p>
+          <p id="explanation"></p>
+          <button id="next-btn" class="next-btn">次の問題へ</button>
+        </div>
+      </div>
+
+      <!-- 結果画面 -->
+      <div id="result-screen" class="screen">
+        <h1>🎉 テスト終了！</h1>
+        <div class="final-score">
+          <p>あなたのスコア</p>
+          <div id="final-score-value"></div>
+          <p id="final-message"></p>
+        </div>
+        <div class="result-details" id="result-details"></div>
+        <button id="retry-btn" class="retry-btn">もう一度チャレンジ</button>
+        <button id="home-btn" class="home-btn">ホームに戻る</button>
+      </div>
+    </div>
+  </body>
+</html>
