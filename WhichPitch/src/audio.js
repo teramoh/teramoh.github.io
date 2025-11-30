@@ -39,53 +39,92 @@ export async function resumeAudio() {
   }
 }
 
-// Play a single note
-export function playNote(note, octave, duration = 0.8) {
+// Play a single note with realistic piano sound
+export function playNote(note, octave, duration = 1.2) {
   return new Promise((resolve) => {
     initAudio();
     resumeAudio();
 
     const frequency = getFrequency(note, octave);
-    
-    // Create oscillator
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-    
-    // Set up oscillator
-    oscillator.type = 'sine';
-    oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-    
-    // Add some harmonics for a more piano-like sound
-    const oscillator2 = audioContext.createOscillator();
-    oscillator2.type = 'triangle';
-    oscillator2.frequency.setValueAtTime(frequency * 2, audioContext.currentTime);
-    
-    const gainNode2 = audioContext.createGain();
-    gainNode2.gain.setValueAtTime(0.4, audioContext.currentTime);
-    
-    // ADSR envelope - increased volume
     const now = audioContext.currentTime;
-    const attackTime = 0.02;
-    const decayTime = 0.1;
-    const sustainLevel = 0.8;
-    const releaseTime = 0.3;
     
-    gainNode.gain.setValueAtTime(0, now);
-    gainNode.gain.linearRampToValueAtTime(1.0, now + attackTime);
-    gainNode.gain.linearRampToValueAtTime(sustainLevel, now + attackTime + decayTime);
-    gainNode.gain.linearRampToValueAtTime(0, now + duration);
+    // Master gain for overall volume
+    const masterGain = audioContext.createGain();
+    masterGain.gain.setValueAtTime(0.7, now);
+    masterGain.connect(audioContext.destination);
     
-    // Connect nodes
-    oscillator.connect(gainNode);
-    oscillator2.connect(gainNode2);
-    gainNode2.connect(gainNode);
-    gainNode.connect(audioContext.destination);
+    // Piano harmonic structure (relative amplitudes)
+    const harmonics = [
+      { ratio: 1, amplitude: 1.0 },      // Fundamental
+      { ratio: 2, amplitude: 0.5 },      // 2nd harmonic
+      { ratio: 3, amplitude: 0.25 },     // 3rd harmonic
+      { ratio: 4, amplitude: 0.15 },     // 4th harmonic
+      { ratio: 5, amplitude: 0.08 },     // 5th harmonic
+      { ratio: 6, amplitude: 0.05 },     // 6th harmonic
+    ];
     
-    // Start and stop
-    oscillator.start(now);
-    oscillator2.start(now);
-    oscillator.stop(now + duration);
-    oscillator2.stop(now + duration);
+    const oscillators = [];
+    const gains = [];
+    
+    // Create oscillators for each harmonic
+    harmonics.forEach((harmonic, index) => {
+      const osc = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+      
+      // Use sine waves for clean piano tone
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(frequency * harmonic.ratio, now);
+      
+      // Piano ADSR envelope - sharp attack, long decay
+      const attackTime = 0.005;  // Very fast attack (hammer strike)
+      const decayTime = 0.4;     // Medium decay
+      const sustainLevel = harmonic.amplitude * 0.3;
+      const releaseStart = duration - 0.2;
+      
+      gain.gain.setValueAtTime(0, now);
+      // Sharp attack
+      gain.gain.linearRampToValueAtTime(harmonic.amplitude, now + attackTime);
+      // Natural decay curve (exponential for piano)
+      gain.gain.exponentialRampToValueAtTime(
+        Math.max(sustainLevel, 0.001), 
+        now + attackTime + decayTime
+      );
+      // Gradual release
+      gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+      
+      osc.connect(gain);
+      gain.connect(masterGain);
+      
+      osc.start(now);
+      osc.stop(now + duration + 0.1);
+      
+      oscillators.push(osc);
+      gains.push(gain);
+    });
+    
+    // Add a soft "thump" for the hammer attack
+    const noiseBuffer = audioContext.createBuffer(1, audioContext.sampleRate * 0.05, audioContext.sampleRate);
+    const noiseData = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < noiseData.length; i++) {
+      noiseData[i] = (Math.random() * 2 - 1) * Math.exp(-i / (audioContext.sampleRate * 0.01));
+    }
+    
+    const noiseSource = audioContext.createBufferSource();
+    noiseSource.buffer = noiseBuffer;
+    
+    const noiseGain = audioContext.createGain();
+    noiseGain.gain.setValueAtTime(0.08, now);
+    noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+    
+    const noiseFilter = audioContext.createBiquadFilter();
+    noiseFilter.type = 'highpass';
+    noiseFilter.frequency.setValueAtTime(frequency * 2, now);
+    
+    noiseSource.connect(noiseFilter);
+    noiseFilter.connect(noiseGain);
+    noiseGain.connect(masterGain);
+    noiseSource.start(now);
+    noiseSource.stop(now + 0.05);
     
     setTimeout(() => {
       resolve();
