@@ -225,9 +225,8 @@ function newQuestion() {
     key.classList.remove('correct', 'wrong');
   });
   
-  // Hide result display
-  elements.resultDisplay.classList.add('hidden');
-  elements.nextBtn.classList.add('hidden');
+  // Hide modals
+  hideModals();
   
   if (gameState.mode === 'single') {
     gameState.currentQuestion = generateRandomNote();
