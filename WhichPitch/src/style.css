@@ -6,22 +6,22 @@
 }
 
 :root {
-  --primary-color: #6366f1;
-  --primary-hover: #4f46e5;
-  --success-color: #22c55e;
-  --error-color: #ef4444;
-  --bg-color: #0f172a;
-  --card-bg: #1e293b;
-  --text-color: #f8fafc;
-  --text-muted: #94a3b8;
-  --border-color: #334155;
+  --primary-color: #ff6b9d;
+  --primary-hover: #ff4785;
+  --success-color: #4ade80;
+  --error-color: #ff6b6b;
+  --bg-color: #fff5f8;
+  --card-bg: #ffffff;
+  --text-color: #5c4d5c;
+  --text-muted: #9b8a9b;
+  --border-color: #ffd6e7;
   --white-key: #ffffff;
-  --black-key: #1e293b;
+  --black-key: #6b5b7a;
 }
 
 body {
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  background: linear-gradient(135deg, var(--bg-color) 0%, #1e1b4b 100%);
+  background: linear-gradient(135deg, #fff0f5 0%, #ffe4f0 50%, #f0e6ff 100%);
   color: var(--text-color);
   min-height: 100vh;
   line-height: 1.6;
@@ -45,7 +45,7 @@ header {
 header h1 {
   font-size: 2.5rem;
   margin-bottom: 8px;
-  background: linear-gradient(135deg, #818cf8, #c084fc);
+  background: linear-gradient(135deg, #ff6b9d, #ff9ecd, #c88bff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -67,10 +67,10 @@ main {
 /* Card */
 .card {
   background: var(--card-bg);
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 24px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
-  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 20px rgba(255, 107, 157, 0.15);
+  border: 2px solid var(--border-color);
 }
 
 .card h2 {
@@ -96,9 +96,9 @@ main {
   align-items: center;
   gap: 10px;
   padding: 28px 16px;
-  background: rgba(99, 102, 241, 0.1);
+  background: rgba(255, 182, 203, 0.2);
   border: 3px solid transparent;
-  border-radius: 16px;
+  border-radius: 20px;
   cursor: pointer;
   transition: all 0.3s ease;
   color: var(--text-color);
@@ -106,34 +106,34 @@ main {
 
 .level-btn:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 25px rgba(255, 107, 157, 0.25);
 }
 
 .level-btn.kindergarten {
-  background: linear-gradient(135deg, rgba(255, 182, 193, 0.3), rgba(255, 218, 185, 0.3));
+  background: linear-gradient(135deg, rgba(255, 182, 203, 0.4), rgba(255, 218, 233, 0.4));
 }
 
 .level-btn.kindergarten:hover {
   border-color: #ffb6c1;
-  background: linear-gradient(135deg, rgba(255, 182, 193, 0.5), rgba(255, 218, 185, 0.5));
+  background: linear-gradient(135deg, rgba(255, 182, 203, 0.6), rgba(255, 218, 233, 0.6));
 }
 
 .level-btn.elementary {
-  background: linear-gradient(135deg, rgba(135, 206, 250, 0.3), rgba(152, 251, 152, 0.3));
+  background: linear-gradient(135deg, rgba(199, 210, 254, 0.4), rgba(233, 213, 255, 0.4));
 }
 
 .level-btn.elementary:hover {
-  border-color: #87ceeb;
-  background: linear-gradient(135deg, rgba(135, 206, 250, 0.5), rgba(152, 251, 152, 0.5));
+  border-color: #c7b8ea;
+  background: linear-gradient(135deg, rgba(199, 210, 254, 0.6), rgba(233, 213, 255, 0.6));
 }
 
 .level-btn.adult {
-  background: linear-gradient(135deg, rgba(147, 112, 219, 0.3), rgba(99, 102, 241, 0.3));
+  background: linear-gradient(135deg, rgba(251, 207, 232, 0.4), rgba(196, 181, 253, 0.4));
 }
 
 .level-btn.adult:hover {
-  border-color: #9370db;
-  background: linear-gradient(135deg, rgba(147, 112, 219, 0.5), rgba(99, 102, 241, 0.5));
+  border-color: #dda0dd;
+  background: linear-gradient(135deg, rgba(251, 207, 232, 0.6), rgba(196, 181, 253, 0.6));
 }
 
 .level-icon {
@@ -153,8 +153,8 @@ main {
 
 /* Level Info */
 .level-info {
-  background: rgba(99, 102, 241, 0.1);
-  border-radius: 12px;
+  background: rgba(255, 182, 203, 0.2);
+  border-radius: 16px;
   padding: 16px;
   margin-bottom: 20px;
   text-align: center;
@@ -169,17 +169,17 @@ main {
 }
 
 .level-info .level-badge.kindergarten {
-  background: linear-gradient(135deg, #ffb6c1, #ffdab9);
-  color: #8b4513;
+  background: linear-gradient(135deg, #ffb6c1, #ffc0cb);
+  color: #8b4563;
 }
 
 .level-info .level-badge.elementary {
-  background: linear-gradient(135deg, #87ceeb, #98fb98);
-  color: #2e8b57;
+  background: linear-gradient(135deg, #c7d2fe, #e9d5ff);
+  color: #6b5b95;
 }
 
 .level-info .level-badge.adult {
-  background: linear-gradient(135deg, #9370db, #6366f1);
+  background: linear-gradient(135deg, #fbcfe8, #c4b5fd);
   color: white;
 }
 
@@ -202,9 +202,9 @@ main {
   align-items: center;
   gap: 8px;
   padding: 24px 16px;
-  background: rgba(99, 102, 241, 0.1);
+  background: rgba(255, 182, 203, 0.2);
   border: 2px solid transparent;
-  border-radius: 12px;
+  border-radius: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
   color: var(--text-color);
@@ -212,7 +212,7 @@ main {
 
 .mode-btn:hover {
   border-color: var(--primary-color);
-  background: rgba(99, 102, 241, 0.2);
+  background: rgba(255, 182, 203, 0.4);
   transform: translateY(-2px);
 }
 
@@ -322,7 +322,7 @@ main {
 }
 
 #streak-count {
-  color: #fbbf24;
+  color: #ff9ecd;
   font-weight: 600;
 }
 
@@ -338,18 +338,18 @@ main {
   gap: 12px;
   padding: 20px 40px;
   font-size: 1.3rem;
-  background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+  background: linear-gradient(135deg, #ff6b9d, #ff9ecd, #c88bff);
   color: white;
   border: none;
   border-radius: 50px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 4px 20px rgba(255, 107, 157, 0.4);
 }
 
 .play-btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 6px 30px rgba(99, 102, 241, 0.5);
+  box-shadow: 0 6px 30px rgba(255, 107, 157, 0.5);
 }
 
 .play-btn:active {
@@ -419,9 +419,9 @@ main {
 .black-key {
   width: 30px;
   height: 95px;
-  background: var(--black-key);
-  border: 1px solid #0f172a;
-  border-radius: 0 0 6px 6px;
+  background: #6b5b7a;
+  border: 1px solid #5a4a6a;
+  border-radius: 0 0 8px 8px;
   cursor: pointer;
   position: absolute;
   top: 0;
@@ -432,17 +432,17 @@ main {
   align-items: center;
   padding-bottom: 8px;
   transition: all 0.15s ease;
-  color: var(--text-color);
+  color: #fff;
   font-weight: 600;
   font-size: 0.75rem;
 }
 
 .black-key:hover {
-  background: #334155;
+  background: #7d6b8a;
 }
 
 .black-key:active, .black-key.active {
-  background: #475569;
+  background: #8e7b9a;
   transform: translateY(2px);
 }
 
@@ -466,13 +466,13 @@ main {
 }
 
 .result-display.correct {
-  background: rgba(34, 197, 94, 0.2);
-  color: var(--success-color);
+  background: rgba(74, 222, 128, 0.2);
+  color: #22c55e;
 }
 
 .result-display.wrong {
-  background: rgba(239, 68, 68, 0.2);
-  color: var(--error-color);
+  background: rgba(255, 107, 107, 0.2);
+  color: #ff6b6b;
 }
 
 @keyframes fadeIn {
@@ -508,14 +508,15 @@ main {
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+  background: linear-gradient(135deg, #ff6b9d, #ff9ecd, #c88bff);
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 16px;
   font-size: 2.5rem;
   font-weight: 700;
-  box-shadow: 0 4px 30px rgba(99, 102, 241, 0.4);
+  color: white;
+  box-shadow: 0 4px 30px rgba(255, 107, 157, 0.4);
 }
 
 .stats {
@@ -539,14 +540,14 @@ main {
 .stat-value {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #fbbf24;
+  color: #ff9ecd;
 }
 
 /* Footer */
 footer {
   text-align: center;
   padding: 20px;
-  color: var(--text-muted);
+  color: #c9a0c9;
   font-size: 0.9rem;
 }
 
