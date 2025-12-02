@@ -45,10 +45,9 @@ const QUIZ_TYPES = {
 // DOM要素
 const app = document.getElementById('app');
 
-// 画像URLを生成（公式図鑑の画像形式）
+// 画像URLを生成（PokeAPI公式アートワーク）
 const getPokemonImageUrl = (id) => {
-  const paddedId = String(id).padStart(4, '0');
-  return `https://zukan.pokemon.co.jp/zukan-api/up/images/index/${paddedId}.png`;
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
 };
 
 // =====================================

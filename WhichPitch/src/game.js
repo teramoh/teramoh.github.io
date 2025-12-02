@@ -148,6 +148,7 @@ function createPianoKeys() {
   container.style.position = 'relative';
   
   // Create white keys first
+  const whiteKeys = [];
   WHITE_NOTES.forEach((note, index) => {
     const key = document.createElement('button');
     key.className = 'white-key';
@@ -155,6 +156,7 @@ function createPianoKeys() {
     key.textContent = getNoteName(note);
     key.addEventListener('click', () => handleAnswer(note));
     container.appendChild(key);
+    whiteKeys.push(key);
   });
   
   // Create black keys with proper positioning (only if sharps are included)
@@ -162,15 +164,21 @@ function createPianoKeys() {
     const blackKeyPositions = [0, 1, 3, 4, 5]; // Positions after C, D, F, G, A
     const blackNoteNames = ['C#', 'D#', 'F#', 'G#', 'A#'];
     
-    blackKeyPositions.forEach((pos, i) => {
-      const key = document.createElement('button');
-      key.className = 'black-key';
-      key.dataset.note = blackNoteNames[i];
-      key.textContent = getNoteName(blackNoteNames[i]);
-      key.style.left = `${(pos * 49) + 32}px`;
-      key.addEventListener('click', () => handleAnswer(blackNoteNames[i]));
-      container.appendChild(key);
-    });
+    // Use setTimeout to ensure white keys are rendered and we can get their width
+    setTimeout(() => {
+      const whiteKeyWidth = whiteKeys[0]?.offsetWidth || 48;
+      
+      blackKeyPositions.forEach((pos, i) => {
+        const key = document.createElement('button');
+        key.className = 'black-key';
+        key.dataset.note = blackNoteNames[i];
+        key.textContent = getNoteName(blackNoteNames[i]);
+        // Position black key between white keys (center of gap)
+        key.style.left = `${(pos + 1) * whiteKeyWidth}px`;
+        key.addEventListener('click', () => handleAnswer(blackNoteNames[i]));
+        container.appendChild(key);
+      });
+    }, 0);
   }
   
   elements.pianoKeys.appendChild(container);

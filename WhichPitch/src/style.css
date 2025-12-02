@@ -427,7 +427,7 @@ main {
 }
 
 .black-key {
-  width: 30px;
+  width: 28px;
   height: 95px;
   background: #6b5b7a;
   border: 1px solid #5a4a6a;
@@ -445,6 +445,7 @@ main {
   color: #fff;
   font-weight: 600;
   font-size: 0.75rem;
+  transform: translateX(-50%);
 }
 
 .black-key:hover {
