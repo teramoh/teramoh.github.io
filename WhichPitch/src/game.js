@@ -147,16 +147,36 @@ function createPianoKeys() {
   container.style.display = 'flex';
   container.style.position = 'relative';
   
-  // Create white keys first
+  const octaves = getOctaves();
+  const isMultiOctave = octaves.length > 1;
+  
+  // Create white keys for all octaves
   const whiteKeys = [];
-  WHITE_NOTES.forEach((note, index) => {
-    const key = document.createElement('button');
-    key.className = 'white-key';
-    key.dataset.note = note;
-    key.textContent = getNoteName(note);
-    key.addEventListener('click', () => handleAnswer(note));
-    container.appendChild(key);
-    whiteKeys.push(key);
+  octaves.forEach((octave, octaveIndex) => {
+    WHITE_NOTES.forEach((note, noteIndex) => {
+      const key = document.createElement('button');
+      key.className = 'white-key';
+      if (isMultiOctave) {
+        key.classList.add('multi-octave');
+      }
+      key.dataset.note = note;
+      key.dataset.octave = octave;
+      
+      // Show note name, and octave number for multi-octave mode
+      if (isMultiOctave) {
+        if (note === 'C') {
+          key.textContent = `${getNoteName(note)}${octave}`;
+        } else {
+          key.textContent = getNoteName(note);
+        }
+      } else {
+        key.textContent = getNoteName(note);
+      }
+      
+      key.addEventListener('click', () => handleAnswer(note, octave));
+      container.appendChild(key);
+      whiteKeys.push({ key, octave, noteIndex });
+    });
   });
   
   // Create black keys with proper positioning (only if sharps are included)
@@ -166,17 +186,25 @@ function createPianoKeys() {
     
     // Use setTimeout to ensure white keys are rendered and we can get their width
     setTimeout(() => {
-      const whiteKeyWidth = whiteKeys[0]?.offsetWidth || 48;
+      const whiteKeyWidth = whiteKeys[0]?.key.offsetWidth || 48;
       
-      blackKeyPositions.forEach((pos, i) => {
-        const key = document.createElement('button');
-        key.className = 'black-key';
-        key.dataset.note = blackNoteNames[i];
-        key.textContent = getNoteName(blackNoteNames[i]);
-        // Position black key between white keys (center of gap)
-        key.style.left = `${(pos + 1) * whiteKeyWidth}px`;
-        key.addEventListener('click', () => handleAnswer(blackNoteNames[i]));
-        container.appendChild(key);
+      octaves.forEach((octave, octaveIndex) => {
+        const octaveOffset = octaveIndex * 7 * whiteKeyWidth;
+        
+        blackKeyPositions.forEach((pos, i) => {
+          const key = document.createElement('button');
+          key.className = 'black-key';
+          if (isMultiOctave) {
+            key.classList.add('multi-octave');
+          }
+          key.dataset.note = blackNoteNames[i];
+          key.dataset.octave = octave;
+          key.textContent = getNoteName(blackNoteNames[i]);
+          // Position black key between white keys (center of gap)
+          key.style.left = `${octaveOffset + (pos + 1) * whiteKeyWidth}px`;
+          key.addEventListener('click', () => handleAnswer(blackNoteNames[i], octave));
+          container.appendChild(key);
+        });
       });
     }, 0);
   }
@@ -259,6 +287,7 @@ function updateMelodyProgress() {
 
 // Play current question
 async function playCurrentQuestion() {
+  await initAudio(); // Ensure audio is initialized and loaded
   await resumeAudio();
   
   if (gameState.mode === 'single') {
@@ -270,23 +299,32 @@ async function playCurrentQuestion() {
 }
 
 // Handle user answer
-function handleAnswer(selectedNote) {
+function handleAnswer(selectedNote, selectedOctave) {
   if (gameState.isAnswered && gameState.mode === 'single') return;
   
+  // Ensure octave is a number
+  const octave = typeof selectedOctave === 'string' ? parseInt(selectedOctave) : selectedOctave;
+  
   if (gameState.mode === 'single') {
-    handleSingleAnswer(selectedNote);
+    handleSingleAnswer(selectedNote, octave);
   } else {
-    handleMelodyAnswer(selectedNote);
+    handleMelodyAnswer(selectedNote, octave);
   }
 }
 
 // Handle single note answer
-function handleSingleAnswer(selectedNote) {
+function handleSingleAnswer(selectedNote, selectedOctave) {
   gameState.isAnswered = true;
   gameState.score.total++;
   
   const correctNote = gameState.currentQuestion.note;
-  const isCorrect = selectedNote === correctNote;
+  const correctOctave = gameState.currentQuestion.octave;
+  const isMultiOctave = getOctaves().length > 1;
+  
+  // In multi-octave mode, both note and octave must match
+  const isCorrect = isMultiOctave 
+    ? (selectedNote === correctNote && selectedOctave === correctOctave)
+    : (selectedNote === correctNote);
   
   // Update score
   if (isCorrect) {
@@ -301,39 +339,57 @@ function handleSingleAnswer(selectedNote) {
   
   // Update UI
   updateScoreDisplay();
-  highlightKeys(selectedNote, correctNote, isCorrect);
+  highlightKeys(selectedNote, selectedOctave, correctNote, correctOctave, isCorrect, isMultiOctave);
   
   // Play the selected note
-  const octave = gameState.currentQuestion.octave;
-  playNote(selectedNote, octave, 0.5);
+  playNote(selectedNote, selectedOctave, 0.5);
+  
+  // Format answer (include octave for adult level with multiple octaves)
+  const showOctave = gameState.level === 'adult' && isMultiOctave;
+  const answerText = showOctave 
+    ? `${getNoteName(correctNote)}${correctOctave}` 
+    : getNoteName(correctNote);
   
   if (isCorrect) {
     // Show correct modal
-    showCorrectModal(getNoteName(correctNote));
+    showCorrectModal(answerText);
   } else {
     // Show wrong modal
-    showWrongModal(getNoteName(correctNote));
+    showWrongModal(answerText);
   }
 }
 
 // Handle melody answer
-function handleMelodyAnswer(selectedNote) {
+function handleMelodyAnswer(selectedNote, selectedOctave) {
   const currentIndex = gameState.currentMelodyIndex;
   const correctNote = gameState.currentQuestion[currentIndex].note;
-  const isCorrect = selectedNote === correctNote;
+  const correctOctave = gameState.currentQuestion[currentIndex].octave;
+  const isMultiOctave = getOctaves().length > 1;
   
-  gameState.userAnswers.push(selectedNote);
+  // In multi-octave mode, both note and octave must match
+  const isCorrect = isMultiOctave 
+    ? (selectedNote === correctNote && selectedOctave === correctOctave)
+    : (selectedNote === correctNote);
+  
+  // Format answer helper (include octave for adult level with multiple octaves)
+  const showOctave = gameState.level === 'adult' && isMultiOctave;
+  const formatNoteAnswer = (n) => showOctave 
+    ? `${getNoteName(n.note)}${n.octave}` 
+    : getNoteName(n.note);
+  
+  gameState.userAnswers.push({ note: selectedNote, octave: selectedOctave });
   
   // Visual feedback
-  const key = document.querySelector(`[data-note="${selectedNote}"]`);
+  const key = isMultiOctave 
+    ? document.querySelector(`[data-note="${selectedNote}"][data-octave="${selectedOctave}"]`)
+    : document.querySelector(`[data-note="${selectedNote}"]`);
   if (key) {
     key.classList.add(isCorrect ? 'correct' : 'wrong');
     setTimeout(() => key.classList.remove('correct', 'wrong'), 300);
   }
   
   // Play the selected note
-  const octave = gameState.currentQuestion[currentIndex].octave;
-  playNote(selectedNote, octave, 0.3);
+  playNote(selectedNote, selectedOctave, 0.3);
   
   if (!isCorrect) {
     // Wrong answer - end melody
@@ -341,7 +397,7 @@ function handleMelodyAnswer(selectedNote) {
     gameState.score.total++;
     gameState.score.streak = 0;
     
-    const correctNotes = gameState.currentQuestion.map(n => getNoteName(n.note)).join(' → ');
+    const correctNotes = gameState.currentQuestion.map(formatNoteAnswer).join(' → ');
     showWrongModal(correctNotes);
     updateScoreDisplay();
     return;
@@ -362,15 +418,19 @@ function handleMelodyAnswer(selectedNote) {
     
     updateScoreDisplay();
     // Show correct modal for melody
-    const correctNotes = gameState.currentQuestion.map(n => getNoteName(n.note)).join(' → ');
+    const correctNotes = gameState.currentQuestion.map(formatNoteAnswer).join(' → ');
     showCorrectModal(correctNotes);
   }
 }
 
 // Highlight piano keys
-function highlightKeys(selectedNote, correctNote, isCorrect) {
-  const selectedKey = document.querySelector(`[data-note="${selectedNote}"]`);
-  const correctKey = document.querySelector(`[data-note="${correctNote}"]`);
+function highlightKeys(selectedNote, selectedOctave, correctNote, correctOctave, isCorrect, isMultiOctave) {
+  const selectedKey = isMultiOctave 
+    ? document.querySelector(`[data-note="${selectedNote}"][data-octave="${selectedOctave}"]`)
+    : document.querySelector(`[data-note="${selectedNote}"]`);
+  const correctKey = isMultiOctave 
+    ? document.querySelector(`[data-note="${correctNote}"][data-octave="${correctOctave}"]`)
+    : document.querySelector(`[data-note="${correctNote}"]`);
   
   if (selectedKey) {
     selectedKey.classList.add(isCorrect ? 'correct' : 'wrong');
